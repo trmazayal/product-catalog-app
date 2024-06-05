@@ -1,19 +1,21 @@
 <script>
-
-export default {
-  data () {
-    return {
-      product: []
-    }
-  },
-  async mounted() {
-    const runtimeConfig = useRuntimeConfig()
-    this.product = await $fetch(runtimeConfig.public.baseUrl + '/products/' + this.$route.params.id)
-  },
-}
+  export default {
+    data () {
+      return {
+        product: []
+      }
+    },
+    async mounted() {
+      const runtimeConfig = useRuntimeConfig()
+      this.product = await $fetch(runtimeConfig.public.baseUrl + '/products/' + this.$route.params.id)
+    },
+  }
 </script>
 
 <template>
+  <div class="max-w-screen-xl mx-auto p-4 text-center">
+      <h1 class="text-3xl font-semibold text-gray-800 dark:text-white">Product Detail</h1>
+  </div>
   <div class="max-w-screen-xl mx-auto p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
     <div class="flex flex-col items-center">
       <img :src="product.image"

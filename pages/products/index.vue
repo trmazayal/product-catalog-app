@@ -1,16 +1,15 @@
 <script>
-
-export default {
-  data () {
-    return {
-      products: []
-    }
-  },
-  async mounted() {
-    const runtimeConfig = useRuntimeConfig()
-    this.products = await $fetch(runtimeConfig.public.baseUrl + '/products?page=1&limit=10')
-  },
-}
+  export default {
+    data () {
+      return {
+        products: []
+      }
+    },
+    async mounted() {
+      const runtimeConfig = useRuntimeConfig()
+      this.products = await $fetch(runtimeConfig.public.baseUrl + '/products?page=1&limit=10')
+    },
+  }
 </script>
 
 <template>
