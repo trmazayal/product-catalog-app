@@ -4,5 +4,15 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss'
   ],
-
+  app: {
+    head: {
+      title: 'Product Catalog',
+      meta: [{ charset: 'utf-8' }],
+    },
+  },
+  runtimeConfig: {
+    public: {
+      baseUrl:"",
+    }
+  },
 })
