@@ -14,8 +14,7 @@ const goToPage = async (page) => {
 
 <template>
   <div class="max-w-screen-xl mx-auto p-4 text-center">
-    <h1 class="text-3xl font-semibold text-gray-800 dark:text-white">Products</h1>
-    <p class="mt-2 text-gray-600 dark:text-gray-400">List of products</p>
+    <h1 class="text-3xl font-semibold text-gray-800 dark:text-white">List of Products</h1>
     <div class="mt-4 flex justify-center">
       <NuxtLink to="/products/create" class="mt-4 px-3 py-1 text-sm text-white bg-green-600 rounded-md">Create Product</NuxtLink>
     </div>
