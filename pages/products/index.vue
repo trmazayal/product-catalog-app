@@ -17,19 +17,36 @@ const goToPage = async (page) => {
 const getPaginationRange = () => {
   const totalPages = productStore.totalPages;
   const currentPage = productStore.currentPage;
-  const range = 2;
-  let start = Math.max(currentPage - range, 1);
-  let end = Math.min(currentPage + range, totalPages);
+  const range = 3; // Number of pages to show around the current page
 
-  if (currentPage - range < 1) {
-    end = Math.min(end + (range - (currentPage - 1)), totalPages);
+  let start = Math.max(currentPage - 1, 2); // Ensure at least page 2 is shown if applicable
+  let end = Math.min(currentPage + 1, totalPages - 1); // Ensure at least the second last page is shown if applicable
+
+  const pages = [];
+
+  // Always show the first page
+  pages.push(1);
+
+  // Show ellipsis if there are pages between the first page and the start of the range
+  if (start > 2) {
+    pages.push('...');
   }
 
-  if (currentPage + range > totalPages) {
-    start = Math.max(start - (range - (totalPages - currentPage)), 1);
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
   }
 
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  // Show ellipsis if there are pages between the end of the range and the last page
+  if (end < totalPages - 1) {
+    pages.push('...');
+  }
+
+  // Always show the last page
+  if (totalPages > 1) {
+    pages.push(totalPages);
+  }
+
+  return pages;
 };
 </script>
 
@@ -72,7 +89,15 @@ const getPaginationRange = () => {
           <button @click="goToPage(productStore.currentPage - 1)" :disabled="productStore.currentPage === 1" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</button>
         </li>
         <li v-for="page in getPaginationRange()" :key="page">
-          <button @click="goToPage(page)" :class="{'text-blue-600 border border-gray-300 bg-blue-50': page === productStore.currentPage, 'leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700': page !== productStore.currentPage, 'dark:border-gray-700 dark:bg-gray-700 dark:text-white': page === productStore.currentPage && page !== 1}" class="flex items-center justify-center px-4 h-10">{{ page }}</button>
+          <button
+            v-if="page !== '...'"
+            @click="goToPage(page)"
+            :class="{'text-blue-600 border border-gray-300 bg-blue-50': page === productStore.currentPage, 'leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700': page !== productStore.currentPage, 'dark:border-gray-700 dark:bg-gray-700 dark:text-white': page === productStore.currentPage && page !== 1}"
+            class="flex items-center justify-center px-4 h-10"
+          >
+            {{ page }}
+          </button>
+          <span v-else class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">...</span>
         </li>
         <li>
           <button @click="goToPage(productStore.currentPage + 1)" :disabled="productStore.currentPage === productStore.totalPages" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</button>
