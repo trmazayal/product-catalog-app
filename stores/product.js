@@ -20,6 +20,12 @@ export const useProductStore = defineStore('product', {
                 method: 'PUT',
                 body: this.product
             });
+        },
+        async deleteProduct(productId) {
+            const runtimeConfig = useRuntimeConfig();
+            await $fetch(`${runtimeConfig.public.baseUrl}/products/${productId}`, {
+                method: 'DELETE'
+            });
         }
     },
     getters: {
