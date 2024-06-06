@@ -5,13 +5,6 @@ export default {
       products: [],
       currentPage: 1,
       totalPages: 0,
-      showAddProductModal: false,
-      newProduct: {
-        title: '',
-        description: '',
-        price: '',
-        image: '',
-      },
     };
   },
   async mounted() {
@@ -31,27 +24,6 @@ export default {
         await this.fetchProducts();
       }
     },
-    openAddProductModal() {
-      this.showAddProductModal = true;
-    },
-    async addProduct() {
-      const runtimeConfig = useRuntimeConfig();
-      await $fetch(runtimeConfig.public.baseUrl + '/products', {
-        method: 'POST',
-        body: JSON.stringify(this.newProduct),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      this.showAddProductModal = false;
-      this.newProduct = {
-        title: '',
-        description: '',
-        price: '',
-        image: '',
-      };
-      await this.fetchProducts();
-    },
   },
 };
 </script>
@@ -60,9 +32,9 @@ export default {
   <div class="max-w-screen-xl mx-auto p-4 text-center">
     <h1 class="text-3xl font-semibold text-gray-800 dark:text-white">Products</h1>
     <p class="mt-2 text-gray-600 dark:text-gray-400">List of products</p>
-    <button @click="openAddProductModal" class="mt-4 px-3 py-1 text-sm text-white bg-green-600 rounded-md">
-      Add Product
-    </button>
+    <div  class="mt-4 flex justify-center">
+      <NuxtLink to="/products/create" class="mt-4 px-3 py-1 text-sm text-white bg-green-600 rounded-md">Create Product</NuxtLink>
+    </div>
   </div>
 
   <div class="max-w-screen-xl mx-auto p-4">
@@ -102,38 +74,6 @@ export default {
       >
         Next
       </button>
-    </div>
-  </div>
-
-  <div v-if="showAddProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-    <div class="bg-white p-6 rounded-lg">
-      <h2 class="text-xl font-semibold mb-4">Add New Product</h2>
-      <form @submit.prevent="addProduct">
-        <div class="mb-4">
-          <label class="block text-gray-700">Title</label>
-          <input v-model="newProduct.title" class="w-full px-3 py-2 border rounded-md" type="text" required />
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700">Description</label>
-          <textarea v-model="newProduct.description" class="w-full px-3 py-2 border rounded-md" required></textarea>
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700">Price</label>
-          <input v-model="newProduct.price" class="w-full px-3 py-2 border rounded-md" type="number" required />
-        </div>
-        <div class="mb-4">
-          <label class="block text-gray-700">Image URL</label>
-          <input v-model="newProduct.image" class="w-full px-3 py-2 border rounded-md" type="text" required />
-        </div>
-        <div class="flex justify-end space-x-2">
-          <button @click="showAddProductModal = false" class="px-3 py-1 text-sm text-white bg-gray-700 rounded-md">
-            Cancel
-          </button>
-          <button type="submit" class="px-3 py-1 text-sm text-white bg-blue-700 rounded-md">
-            Add
-          </button>
-        </div>
-      </form>
     </div>
   </div>
 </template>
