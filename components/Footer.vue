@@ -6,15 +6,15 @@
         <div class="sm:flex sm:items-center sm:justify-between">
             <a href="/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
                 <img src="assets/images/logo-privy.svg" class="h-8" alt="Flowbite Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Privy Mini roject</span>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Privy Mini Project</span>
             </a>
             <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                 <li>
-                    <!-- add github icon -->
-                     <div class="flex items-center space-x-3 rtl:space-x-reverse">
-                        <img src="https://img.icons8.com/ios-glyphs/30/000000/github.png" />
-                        <a href="https://github.com/trmazayal" class="hover:underline me-4 md:me-6">About Me</a>
-                    </div>
+                    <!-- GitHub icon is now clickable -->
+                    <a href="https://github.com/trmazayal" class="flex items-center space-x-3 rtl:space-x-reverse hover:underline">
+                        <img src="https://img.icons8.com/ios-glyphs/30/000000/github.png" alt="GitHub" />
+                        <span>About Me</span>
+                    </a>
                 </li>
             </ul>
         </div>
