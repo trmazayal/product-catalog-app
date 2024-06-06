@@ -27,12 +27,7 @@ export const useProductStore = defineStore('product', {
                 body: JSON.stringify(productData)
             });
             // Clear product data after successful creation
-            this.product = {
-                title: '',
-                price: 0,
-                description: '',
-                image: ''
-            };
+            this.clearProduct();
         },
         async fetchProducts() {
             this.loading = true;
@@ -51,10 +46,10 @@ export const useProductStore = defineStore('product', {
             }
         },
         async goToPage(page) {
-        if (page > 0 && page <= this.totalPages) {
-            this.currentPage = page;
-            await this.fetchProducts();
-        }
+            if (page > 0 && page <= this.totalPages) {
+                this.currentPage = page;
+                await this.fetchProducts();
+            }
         },
         async updateProduct(productId) {
             const runtimeConfig = useRuntimeConfig();
@@ -62,12 +57,22 @@ export const useProductStore = defineStore('product', {
                 method: 'PUT',
                 body: this.product
             });
+            // Clear product data after successful update
+            this.clearProduct();
         },
         async deleteProduct(productId) {
             const runtimeConfig = useRuntimeConfig();
             await $fetch(`${runtimeConfig.public.baseUrl}/products/${productId}`, {
                 method: 'DELETE'
             });
+        },
+        clearProduct() {
+            this.product = {
+                title: '',
+                price: 0,
+                description: '',
+                image: ''
+            };
         }
     },
     getters: {
