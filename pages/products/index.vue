@@ -1,30 +1,14 @@
-<script>
-export default {
-  data() {
-    return {
-      products: [],
-      currentPage: 1,
-      totalPages: 0,
-    };
-  },
-  async mounted() {
-    await this.fetchProducts();
-  },
-  methods: {
-    async fetchProducts() {
-      const runtimeConfig = useRuntimeConfig();
-      const products = await $fetch(runtimeConfig.public.baseUrl + `/products?page=${this.currentPage}&limit=10`);
-      const allProducts = await $fetch(runtimeConfig.public.baseUrl + '/products');
-      this.products = products;
-      this.totalPages = Math.ceil(allProducts.length / 10);
-    },
-    async goToPage(page) {
-      if (page > 0 && page <= this.totalPages) {
-        this.currentPage = page;
-        await this.fetchProducts();
-      }
-    },
-  },
+<script setup>
+import { useProductStore } from '@/stores/product';
+
+const productStore = useProductStore();
+
+onMounted(async () => {
+  await productStore.fetchProducts();
+});
+
+const goToPage = async (page) => {
+  await productStore.goToPage(page);
 };
 </script>
 
@@ -32,14 +16,14 @@ export default {
   <div class="max-w-screen-xl mx-auto p-4 text-center">
     <h1 class="text-3xl font-semibold text-gray-800 dark:text-white">Products</h1>
     <p class="mt-2 text-gray-600 dark:text-gray-400">List of products</p>
-    <div  class="mt-4 flex justify-center">
+    <div class="mt-4 flex justify-center">
       <NuxtLink to="/products/create" class="mt-4 px-3 py-1 text-sm text-white bg-green-600 rounded-md">Create Product</NuxtLink>
     </div>
   </div>
 
   <div class="max-w-screen-xl mx-auto p-4">
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      <template v-for="product in products" :key="product.id">
+      <template v-for="product in productStore.products" :key="product.id">
         <div class="bg-white border border-gray-100 rounded-lg p-4 flex flex-col justify-between">
           <div>
             <img
@@ -60,16 +44,16 @@ export default {
     </div>
     <div class="mt-4 flex justify-center space-x-2">
       <button
-        @click="goToPage(currentPage - 1)"
-        :disabled="currentPage === 1"
+        @click="goToPage(productStore.currentPage - 1)"
+        :disabled="productStore.currentPage === 1"
         class="px-3 py-1 text-sm text-white bg-blue-700 rounded-md disabled:bg-gray-400"
       >
         Previous
       </button>
-      <span class="text-lg text-gray-800 dark:text-white">{{ currentPage }} / {{ totalPages }}</span>
+      <span class="text-lg text-gray-800 dark:text-white">{{ productStore.currentPage }} / {{ productStore.totalPages }}</span>
       <button
-        @click="goToPage(currentPage + 1)"
-        :disabled="currentPage === totalPages"
+        @click="goToPage(productStore.currentPage + 1)"
+        :disabled="productStore.currentPage === productStore.totalPages"
         class="px-3 py-1 text-sm text-white bg-blue-700 rounded-md disabled:bg-gray-400"
       >
         Next

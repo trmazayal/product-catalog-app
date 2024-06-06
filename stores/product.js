@@ -7,7 +7,9 @@ export const useProductStore = defineStore('product', {
             price: 0,
             description: '',
             image: ''
-        }
+        },
+        currentPage: 1,
+        totalPages: 0,
     }),
     actions: {
         async fetchProduct(productId) {
@@ -31,6 +33,19 @@ export const useProductStore = defineStore('product', {
                 image: ''
             };
         },
+        async fetchProducts() {
+            const runtimeConfig = useRuntimeConfig();
+            const products = await $fetch(`${runtimeConfig.public.baseUrl}/products?page=${this.currentPage}&limit=10`);
+            const allProducts = await $fetch(`${runtimeConfig.public.baseUrl}/products`);
+            this.products = products;
+            this.totalPages = Math.ceil(allProducts.length / 10);
+          },
+          async goToPage(page) {
+            if (page > 0 && page <= this.totalPages) {
+              this.currentPage = page;
+              await this.fetchProducts();
+            }
+          },
         async updateProduct(productId) {
             const runtimeConfig = useRuntimeConfig();
             await $fetch(`${runtimeConfig.public.baseUrl}/products/${productId}`, {

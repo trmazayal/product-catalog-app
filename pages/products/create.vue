@@ -1,7 +1,6 @@
 <script setup>
 import { useProductStore } from '@/stores/product';
 import { useRouter } from 'vue-router';
-import { useRuntimeConfig } from '#app';
 
 const router = useRouter();
 const store = useProductStore();
