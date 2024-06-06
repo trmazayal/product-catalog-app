@@ -9,7 +9,27 @@ onMounted(async () => {
 });
 
 const goToPage = async (page) => {
-  await productStore.goToPage(page);
+  if (page > 0 && page <= productStore.totalPages) {
+    await productStore.goToPage(page);
+  }
+};
+
+const getPaginationRange = () => {
+  const totalPages = productStore.totalPages;
+  const currentPage = productStore.currentPage;
+  const range = 2;
+  let start = Math.max(currentPage - range, 1);
+  let end = Math.min(currentPage + range, totalPages);
+
+  if (currentPage - range < 1) {
+    end = Math.min(end + (range - (currentPage - 1)), totalPages);
+  }
+
+  if (currentPage + range > totalPages) {
+    start = Math.max(start - (range - (totalPages - currentPage)), 1);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 };
 </script>
 
@@ -45,23 +65,20 @@ const goToPage = async (page) => {
         </div>
       </template>
     </div>
-    <div class="mt-4 flex justify-center space-x-2">
-      <button
-        @click="goToPage(productStore.currentPage - 1)"
-        :disabled="productStore.currentPage === 1"
-        class="px-3 py-1 text-sm text-white bg-blue-700 rounded-md disabled:bg-gray-400"
-      >
-        Previous
-      </button>
-      <span class="text-lg text-gray-800 dark:text-white">{{ productStore.currentPage }} / {{ productStore.totalPages }}</span>
-      <button
-        @click="goToPage(productStore.currentPage + 1)"
-        :disabled="productStore.currentPage === productStore.totalPages"
-        class="px-3 py-1 text-sm text-white bg-blue-700 rounded-md disabled:bg-gray-400"
-      >
-        Next
-      </button>
-    </div>
+
+    <nav aria-label="Page navigation example" class="mt-4 flex justify-center space-x-2">
+      <ul class="inline-flex -space-x-px text-base h-10">
+        <li>
+          <button @click="goToPage(productStore.currentPage - 1)" :disabled="productStore.currentPage === 1" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</button>
+        </li>
+        <li v-for="page in getPaginationRange()" :key="page">
+          <button @click="goToPage(page)" :class="{'text-blue-600 border border-gray-300 bg-blue-50': page === productStore.currentPage, 'leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700': page !== productStore.currentPage, 'dark:border-gray-700 dark:bg-gray-700 dark:text-white': page === productStore.currentPage && page !== 1}" class="flex items-center justify-center px-4 h-10">{{ page }}</button>
+        </li>
+        <li>
+          <button @click="goToPage(productStore.currentPage + 1)" :disabled="productStore.currentPage === productStore.totalPages" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
