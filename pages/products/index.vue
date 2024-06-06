@@ -1,5 +1,6 @@
 <script setup>
 import { useProductStore } from '@/stores/product';
+import { onMounted } from 'vue';
 
 const productStore = useProductStore();
 
@@ -21,7 +22,10 @@ const goToPage = async (page) => {
   </div>
 
   <div class="max-w-screen-xl mx-auto p-4">
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div v-if="productStore.loading" class="flex justify-center">
+      <div class="loader"></div> <!-- Loading spinner -->
+    </div>
+    <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <template v-for="product in productStore.products" :key="product.id">
         <div class="bg-white border border-gray-100 rounded-lg p-4 flex flex-col justify-between">
           <div>
@@ -60,3 +64,19 @@ const goToPage = async (page) => {
     </div>
   </div>
 </template>
+
+<style>
+.loader {
+  border: 4px solid #f3f3f3; /* Light grey */
+  border-top: 4px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
