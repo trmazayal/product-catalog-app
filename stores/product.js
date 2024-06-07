@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import product from '~/plugins/product';
 
 export const useProductStore = defineStore('product', {
     state: () => ({
@@ -11,6 +12,7 @@ export const useProductStore = defineStore('product', {
         currentPage: 1,
         totalPages: 0,
         loading: false,
+        products : {}
     }),
     actions: {
         async fetchProduct(productId) {
@@ -77,5 +79,8 @@ export const useProductStore = defineStore('product', {
     },
     getters: {
         getProduct: (state) => state.product
-    }
+    },
+    persist: {
+        storage: persistedState.localStorage,
+      },
 });

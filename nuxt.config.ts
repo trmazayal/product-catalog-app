@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
   app: {
     head: {
@@ -15,5 +16,8 @@ export default defineNuxtConfig({
     public: {
       baseUrl:"",
     }
+  },
+  imports: {
+    dirs: ['stores'],
   },
 })
