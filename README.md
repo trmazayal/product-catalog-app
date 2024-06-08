@@ -8,6 +8,14 @@ This is a simple product catalog app that allows users to view, create, update, 
 
 Minimal setup is required to get the app running. Make to run [this](minimal-starter.md) setup before running the app.
 
+## Running the App via Docker 
+
+To run the app via Docker, run the following commands:
+
+```bash
+docker-compose up --build
+```
+
 ## Endpoints
 
 Base URL: `https://611a1a2fcbf1b30017eb54c1.mockapi.io/`

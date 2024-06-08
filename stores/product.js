@@ -80,7 +80,7 @@ export const useProductStore = defineStore('product', {
     getters: {
         getProduct: (state) => state.product
     },
-    persist: {
-        storage: persistedState.localStorage,
-      },
+    // persist: {
+    //     storage: persistedState.localStorage,
+    //   },
 });
