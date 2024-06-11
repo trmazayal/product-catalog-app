@@ -1,15 +1,24 @@
 describe('import vue component', () => {
-    test('import vue component', async () => {
+    test('Footer test case', async () => {
         const  cmp = await import('../components/Footer.vue')
         expect(cmp).toBeDefined()
     })
-    test('template import vue component', async () => {
-        const  cmp = await import('../components/Footer.vue')
+    test('NavBar test case', async () => {
+        const  cmp = await import('../components/NavBar.vue')
         expect(cmp).toBeDefined()
     })
-    test('template import vue component 123', async () => {
-        const name = 'Footer'
-        const  cmp = await import('../components/' + name + '.vue')
+})
+
+describe('import vue page', () => {
+    test('Home test case', async () => {
+        const  cmp = await import('../pages/index.vue')
+        expect(cmp).toBeDefined()
+    })
+})
+
+describe('import vue layout', () => {
+    test('DefaultLayout test case', async () => {
+        const  cmp = await import('../layouts/default.vue')
         expect(cmp).toBeDefined()
     })
 })
